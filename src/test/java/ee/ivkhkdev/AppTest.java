@@ -1,5 +1,6 @@
 package ee.ivkhkdev;
 import ee.ivkhkdev.interfaces.Input;
+import ee.ivkhkdev.model.Customer;
 import org.junit.jupiter.api.*;
 import org.mockito.Mockito;
 
@@ -41,9 +42,10 @@ public class AppTest {
     @Test
     public void testInvalidTaskNumber() {
 
-        when(inputMock.nextInt()).thenReturn(5, 0);
+        when(inputMock.nextInt()).thenReturn(1, 0);
 
         App app = new App(inputMock);
+        Customer expected = new Customer("Ivan", "Ivanov", "12345678");
 
         app.run();
 

@@ -12,16 +12,16 @@ public class Customer {
     public Customer() {
         this.id = UUID.randomUUID();
     }
-    public Customer(UUID id, String name, String surname, String phone) {
+    public Customer(String name, String surname, String phone) {
         this.id = id;
         this.name = name;
         this.surname = surname;
         this.phone = phone;
     }
 
-    public Customer(String ivan, String ivanov, String number) {
+    public Customer(String name, String surname, String number) {
     }
-
+    
     public UUID getId() {
         return id;
     }
