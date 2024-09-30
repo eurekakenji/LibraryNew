@@ -8,7 +8,7 @@ import java.util.Scanner;
 
 
 public class App {
-    public static Customer[] customers;
+    public static Customer[] customers = new Customer[100];
     private Input input;
 
     public App(Input inputMock) {
