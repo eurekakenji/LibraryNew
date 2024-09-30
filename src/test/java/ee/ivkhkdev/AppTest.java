@@ -46,8 +46,10 @@ public class AppTest {
         App app = new App(inputMock);
 
         app.run();
-        assertTrue(outContent.toString().contains("Choose a number from the list of tasks!"));
+
+        assertTrue(App.customers[0].getName().equals("Ivan") && outContent.toString().contains("Goodbye! :3"));
     }
+    @org.jetbrains.annotations.NotNull
     private String normalizeString(String input) {
         return input.trim().replaceAll("\\r\\n", "\n").replaceAll("\\s+$", "");
     }

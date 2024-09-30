@@ -1,12 +1,14 @@
 package ee.ivkhkdev;
 
 import ee.ivkhkdev.interfaces.Input;
+import ee.ivkhkdev.model.Customer;
 import ee.ivkhkdev.service.CustomerService;
 
 import java.util.Scanner;
 
 
 public class App {
+    public static Customer[] customers;
     private Input input;
 
     public App(Input inputMock) {
