@@ -1,6 +1,5 @@
 package ee.ivkhkdev.model;
 
-import java.util.Objects;
 import java.util.UUID;
 
 public class Customer {
@@ -18,31 +17,34 @@ public class Customer {
         this.surname = surname;
         this.phone = phone;
     }
-
-    public Customer(String name, String surname, String number) {
-    }
     
     public UUID getId() {
+
         return id;
     }
 
     public void setId(UUID id) {
+
         this.id = id;
     }
 
     public String getName() {
+
         return name;
     }
 
     public void setName(String name) {
+
         this.name = name;
     }
 
     public String getSurname() {
+
         return surname;
     }
 
     public void setSurname(String surname) {
+
         this.surname = surname;
     }
 
@@ -51,6 +53,7 @@ public class Customer {
     }
 
     public void setPhone(String phone) {
+
         this.phone = phone;
     }
 
@@ -58,13 +61,29 @@ public class Customer {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         Customer customer = (Customer) o;
-        return Objects.equals(id, customer.id) && Objects.equals(name, customer.name) && Objects.equals(surname, customer.surname) && Objects.equals(phone, customer.phone);
+        return id.equals(customer.id) && name.equals(customer.name) && surname.equals(customer.surname) && phone.equals(customer.phone);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, surname, phone);
+        int result = id.hashCode();
+        result = 31 * result + name.hashCode();
+        result = 31 * result + surname.hashCode();
+        result = 31 * result + phone.hashCode();
+        return result;
     }
+
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "id=" + id +
+                ", firstName='" + name + '\'' +
+                ", lastName='" + surname + '\'' +
+                ", phone='" + phone + '\'' +
+                '}';
+    }
+
 
 }

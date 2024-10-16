@@ -4,7 +4,7 @@ import ee.ivkhkdev.interfaces.Input;
 import ee.ivkhkdev.model.Customer;
 import ee.ivkhkdev.service.CustomerService;
 
-import java.util.Scanner;
+import java.beans.Customizer;
 
 
 public class App {
@@ -17,13 +17,12 @@ public class App {
 
     public void run() {
         boolean repeat = true;
-        Scanner scanner = new Scanner(System.in);
         do{
             System.out.println("List of tasks:");
             System.out.println("0. leave program");
             System.out.println("1. add user");
             System.out.print("enter task number: ");
-            int task = scanner.nextInt();
+            int task = Integer.parseInt(input.nextLine());
             switch(task){
                 case 0:
                     System.out.println("Exiting program...");
@@ -31,11 +30,12 @@ public class App {
                     break;
                 case 1:
                     System.out.println("1. add user");
-                    CustomerService customerService = new CustomerService();
-                    customerService.createCustomer();
+                    CustomerService customizerService = new CustomerService();
+                    customizerService.createCustomer(input);
                     break;
                 default:
                     System.out.println("Choose a number from the list of tasks!");
+                    break;
 
             }
         }while (repeat);

@@ -7,10 +7,9 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        Input scanner = new ConsoleInput(new Scanner(System.in));
+        Input input = new ConsoleInput(new Scanner(System.in));
         System.out.println("JPTV23Library");
-        Input inputMock = null;
-        App app = new App(inputMock);
+        App app = new App(input);
         app.run();
 
     }

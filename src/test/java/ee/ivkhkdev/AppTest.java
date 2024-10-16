@@ -8,7 +8,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
 public class AppTest {
 
@@ -40,19 +40,24 @@ public class AppTest {
     }
 
     @Test
-    public void testInvalidTaskNumber() {
-
-        when(inputMock.nextInt()).thenReturn(1, 0);
+    public void testRunInvalidTaskNumber() {
+        when(inputMock.nextLine()).thenReturn("5", "0");
 
         App app = new App(inputMock);
-        Customer expected = new Customer("Ivan", "Ivanov", "12345678");
-
         app.run();
 
-        assertTrue(App.customers[0].getName().equals("Ivan") && outContent.toString().contains("Goodbye! :3"));
+        assertTrue(outContent.toString().contains("Выберите номер из списка задач!") && outContent.toString().contains("До свидания! :)"));
     }
-    @org.jetbrains.annotations.NotNull
-    private String normalizeString(String input) {
-        return input.trim().replaceAll("\\r\\n", "\n").replaceAll("\\s+$", "");
+
+    @Test
+    public void testAddCustomer() {
+
+        when(inputMock.nextLine()).thenReturn("1", "Ivan","Ivanov", "56565656","0");
+
+        App app = new App(inputMock);
+        app.run();
+
+        Customer expected = new Customer("Ivan", "Ivanov", "56565656");
+        assertTrue(App.customers[0].getName().equals("Ivan") && outContent.toString().contains("Goodbye! :3"));
     }
 }
