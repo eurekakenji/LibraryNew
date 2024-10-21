@@ -1,63 +1,79 @@
 package ee.ivkhkdev;
-import ee.ivkhkdev.interfaces.Input;
-import ee.ivkhkdev.model.Customer;
-import org.junit.jupiter.api.*;
-import org.mockito.Mockito;
 
+import ee.ivkhkdev.helpers.AppHelperBookInput;
+import ee.ivkhkdev.helpers.AppHelperUserInput;
+import ee.ivkhkdev.model.Book;
+import ee.ivkhkdev.model.User;
+import ee.ivkhkdev.repository.Repository;
+import ee.ivkhkdev.services.BookService;
+import ee.ivkhkdev.services.UserService;
+import ee.ivkhkdev.storages.Storage;
+import ee.ivkhkdev.interfaces.Input;
+import ee.ivkhkdev.interfaces.impl.ConsoleInput;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
+
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
-public class AppTest {
 
-    private Input inputMock;
-    private ByteArrayOutputStream outContent;
-    private final PrintStream originalOut = System.out;
+class AppTest {
 
+    Input inputMock;
+    Repository repositoryMock;
+    PrintStream defaultOut;
+    ByteArrayOutputStream mockOut;
     @BeforeEach
-    public void setUp() {
-        inputMock = Mockito.mock(Input.class);
-
-        outContent = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(outContent));
+    void setUp() {
+        inputMock = Mockito.mock(ConsoleInput.class);
+        repositoryMock = Mockito.mock(Storage.class);
+        defaultOut = System.out;
+        mockOut = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(mockOut));
     }
 
     @AfterEach
-    public void tearDown() {
-        System.setOut(originalOut);
+    void tearDown() {
+        System.setOut(defaultOut);
     }
 
     @Test
-    public void testExitProgram() {
-        when(inputMock.nextInt()).thenReturn(0);
-
+    void runExit() {
+        when(inputMock.nextLine()).thenReturn("0");
         App app = new App(inputMock);
-
         app.run();
-        assertTrue(outContent.toString().contains("Goodbye! :3"));
+        String expected = "До свидания!";
+        String actual = mockOut.toString();
+//        System.setOut(defaultOut);
+//        System.out.println(actual);
+        assertTrue(actual.contains(expected));
     }
-
     @Test
-    public void testRunInvalidTaskNumber() {
-        when(inputMock.nextLine()).thenReturn("5", "0");
-
-        App app = new App(inputMock);
-        app.run();
-
-        assertTrue(outContent.toString().contains("Выберите номер из списка задач!") && outContent.toString().contains("До свидания! :)"));
+    void runAddBook(){
+        AppHelperBookInput appHelperBookInputMock = mock(AppHelperBookInput.class);
+        Book bookMock = Mockito.mock(Book.class);
+        when(appHelperBookInputMock.createBook(inputMock)).thenReturn(bookMock);
+        Repository<Book> repositoryMock = Mockito.mock(Storage.class);
+        BookService bookService = new BookService(inputMock, repositoryMock);
+        boolean result = bookService.addBook(appHelperBookInputMock);
+        verify(repositoryMock, times(1)).save(bookMock);
+        assertTrue(result);
     }
-
     @Test
-    public void testAddCustomer() {
-
-        when(inputMock.nextLine()).thenReturn("1", "Ivan","Ivanov", "56565656","0");
-
-        App app = new App(inputMock);
-        app.run();
-
-        Customer expected = new Customer("Ivan", "Ivanov", "56565656");
-        assertTrue(App.customers[0].getName().equals("Ivan") && outContent.toString().contains("Goodbye! :3"));
+    void runAddUser(){
+        User userMock = Mockito.mock(User.class);
+        AppHelperUserInput appHelperUserInputMock = Mockito.mock(AppHelperUserInput.class);
+        Repository<User> repositoryMock = mock(Storage.class);
+        when(appHelperUserInputMock.createUser(inputMock)).thenReturn(userMock);
+        UserService userService = new UserService(inputMock, repositoryMock);
+        boolean result = userService.addUser(appHelperUserInputMock);
+        verify(repositoryMock, times(1)).save(userMock);
+        assertTrue(result);
     }
 }

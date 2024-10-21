@@ -1,5 +1,6 @@
-package ee.ivkhkdev.interfaces;
+package ee.ivkhkdev.tools;
 
 public interface Input {
+    int nextInt();
     String nextLine();
 }
