@@ -1,111 +1,113 @@
 package ee.ivkhkdev;
 
-import ee.ivkhkdev.helpers.AppHelperRegisterInput;
-import ee.ivkhkdev.helpers.AppHelperUserInput;
+import ee.ivkhkdev.helpers.*;
+import ee.ivkhkdev.interfaces.Input;
+import ee.ivkhkdev.interfaces.impl.ConsoleInput;
+import ee.ivkhkdev.model.Author;
 import ee.ivkhkdev.model.Book;
-import ee.ivkhkdev.model.Register;
 import ee.ivkhkdev.model.User;
-import ee.ivkhkdev.repository.Repository;
-import ee.ivkhkdev.services.BookService;
-import ee.ivkhkdev.helpers.AppHelperBookInput;
-import ee.ivkhkdev.services.RegisterService;
+import ee.ivkhkdev.repositories.Repository;
+import ee.ivkhkdev.services.AuthorService;
 import ee.ivkhkdev.services.UserService;
+import ee.ivkhkdev.services.BookService;
 import ee.ivkhkdev.storages.Storage;
-import ee.ivkhkdev.tools.Input;
-
 import java.util.List;
+import java.util.Scanner;
 
 public class App {
-    List<Book> books;
-    List<User> users;
-    List<Register> registers;
+    private Input input;
+    public List<User> users;
+    public List<Book> books;
+    public List<Author> authors;
 
-    private final Input input;
-    private final Repository<Book> repositoryBook;
-    private final Repository<User> repositoryUser;
-    private final Repository<Register> repositoryRegister;
+    private AppHelper appHelperAuthor;
+    private AppHelper appHelperBook;
+    private AppHelper appHelperUser;
+    private Repository<Author> authorRepository;
+    private Repository<User> userRepository;
+    private Repository<Book> bookRepository;
+    private UserService userService;
+    private BookService bookService;
+    private AuthorService authorService;
 
-    private final BookService bookService;
-    private final UserService userService;
-    private final RegisterService registerService;
-    private final AppHelperBookInput appHelperBookInput;
-    private final AppHelperUserInput appHelperUserInput;
-    private final AppHelperRegisterInput appHelperRegisterInput;
+    // Теперь в конструктор передается Input вместо Scanner
+    public App() {
+        userRepository = new Storage<>("users");
+        bookRepository = new Storage<>("books");
+        authorRepository = new Storage<>("authors");
 
+        this.users = this.userRepository.load();
+        this.authors = this.authorRepository.load();
+        this.books = this.bookRepository.load();
+        this.input = new ConsoleInput(new Scanner(System.in));
 
-    public App(Input input) {
-        this.input = input;
-        this.repositoryBook = new Storage<>("books");
-        this.repositoryUser = new Storage<>("users");
-        this.repositoryRegister = new Storage<>("register");
-        this.appHelperBookInput = new AppHelperBookInput();
-        this.appHelperUserInput = new AppHelperUserInput();
-        this.appHelperRegisterInput = new AppHelperRegisterInput();
-        books = repositoryBook.load();
-        this.bookService = new BookService(books, input, appHelperBookInput, repositoryBook);
-        this.userService = new UserService(users, input, appHelperUserInput, repositoryUser);
-        this.registerService = new RegisterService(books, users, registers, input, repositoryRegister, appHelperRegisterInput);
-        users = repositoryUser.load();
-        registers = repositoryRegister.load();
+        appHelperUser = new AppHelperUser(input);
+        appHelperAuthor = new AppHelperAuthor(input);
+
+        userService = new UserService(users,appHelperUser,userRepository);
+        authorService = new AuthorService(authors,appHelperAuthor,authorRepository);
+        appHelperBook = new AppHelperBook(input,authorService);
+        bookService = new BookService(books,appHelperBook,bookRepository);
     }
 
     public void run() {
         boolean repeat = true;
-        System.out.println("--------------- JKTV23 library --------------");
+        System.out.println("======= JPTV23Library =========");
         do {
-            System.out.println("list of tasks: ");
+            System.out.println("List of tasks:");
             System.out.println("0. Exit program");
-            System.out.println("1. Add book");
-            System.out.println("2. Add reader");
-            System.out.println("3. List of books");
-            System.out.println("4. List of readers");
-            System.out.println("5. Give out book");
-            System.out.println("6. Return book");
-            System.out.print("Pick a task number: ");
-            int task = Integer.parseInt(input.nextLine());
+            System.out.println("1. Add user");
+            System.out.println("2. List of users");
+            System.out.println("3. Add book");
+            System.out.println("4. List of books");
+            System.out.println("5. Add author");
+            System.out.print("Enter task number: ");
+            int task = Integer.parseInt(input.nextLine()); // Используем input
             switch (task) {
                 case 0:
+                    System.out.println("exiting program...");
                     repeat = false;
                     break;
                 case 1:
-                    if(bookService.addBook()){
-                        System.out.println("Book added");
-                    } else {
-                        System.out.println("Failed to add book");
-                    }
+                    System.out.println("Adding user");
+                    if(userService.add()){
+                        System.out.println("User added");
+                    }else{
+                        System.out.println("Failed to add user");
+                    };
                     break;
                 case 2:
-                    if(userService.addUser()){
-                        System.out.println("Reader added");
-                    } else {
-                        System.out.println("Failed to add reader");
+                    if(userService.printList()){
+                        System.out.println("----------- end of list -----------");
                     }
                     break;
                 case 3:
-                    bookService.books(books);
+                    System.out.println("Adding book");
+                    if(bookService.add()){
+                        System.out.println("Book addded");
+                    }else {
+                        System.out.println("Failed to add book");
+                    }
                     break;
                 case 4:
-                    userService.users(users);
+                    if(bookService.printList()){
+                        System.out.println("----------- end of list -----------");
+                    }
                     break;
                 case 5:
-                    if (registerService.bookBorrow(books, userService, bookService)) {
-                        System.out.println("Book borrowed");
-                    } else {
-                        System.out.println("Failed to borrow book");
-                    }
-                    break;
-                case 6:
-                    if (registerService.returnBook(input, registers)) {
-                        System.out.println("Book returned");
+                    System.out.println("Adding author");
+                    if(authorService.add()){
+                        System.out.println("Added author");
                     }else{
-                        System.out.println("Failed to return book");
-                    }
+                        System.out.println("Failed to add author");
+                    };
                     break;
                 default:
-                    System.out.println("Pick a valid task number!");
+                    System.out.println("Pick a number from the list!");
+                    break;
             }
-        }while (repeat);
-        System.out.println("Goodbye!");
-
+            System.out.println("==============================");
+        } while (repeat);
+        System.out.println("Goodbye! :3");
     }
 }

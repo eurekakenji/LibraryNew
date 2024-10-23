@@ -1,13 +1,14 @@
 package ee.ivkhkdev;
 
-import ee.ivkhkdev.tools.Input;
-import ee.ivkhkdev.tools.impl.ConsoleInput;
+import ee.ivkhkdev.interfaces.Input;
+import ee.ivkhkdev.interfaces.impl.ConsoleInput;
+
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        Input input = new ConsoleInput();
-        // Repository<Book> repository = new Storage<Book>("books");
-        App app = new App(input);
+
+        App app = new App();
         app.run();
     }
 }

@@ -1,11 +1,8 @@
-package ee.ivkhkdev.repository;
-
-import ee.ivkhkdev.model.User;
+package ee.ivkhkdev.repositories;
 
 import java.util.List;
 
 public interface Repository<T> {
-    void save(List<T> entities);
+    void save(T entity);
     List<T> load();
-//    List<T> getEntities();
 }

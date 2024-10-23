@@ -1,42 +1,48 @@
 package ee.ivkhkdev.services;
 
+import ee.ivkhkdev.helpers.AppHelper;
 import ee.ivkhkdev.model.Book;
-import ee.ivkhkdev.helpers.AppHelperBookInput;
-import ee.ivkhkdev.repository.Repository;
-import ee.ivkhkdev.tools.Input;
+import ee.ivkhkdev.repositories.Repository;
+
 
 import java.util.List;
 
-public class BookService {
-    private final Input input;
-    private final AppHelperBookInput appHelperBookInput;
-    private final Repository<Book> repository;
-    private List<Book> books;
+public class BookService implements Service{
 
-    public BookService(List<Book> books, Input input, AppHelperBookInput appHelperBookInput, Repository<Book> repository) {
-        this.input = input;
-        this.repository = repository;
-        this.appHelperBookInput = appHelperBookInput;
+    private final List<Book> books;
+    private Repository<Book> repository;
+    private AppHelper appHelperBook;
+
+    public BookService(List<Book> books, AppHelper appHelperBook, Repository<Book> repository) {
         this.books = books;
-
+        this.appHelperBook = appHelperBook;
+        this.repository = repository;
     }
-
-    public boolean addBook(){
-        Book book = appHelperBookInput.createBook(input);
-        if(book != null) {
-            books.add(book);
-            repository.save(books);
+    public boolean add(){
+        try {
+            Book book = (Book) appHelperBook.create();
+            if(book == null) return false;
+            for (int i = 0; i <= books.size(); i++){
+                if(i == 0 ){
+                    books.add(book);
+                    repository.save(book);
+                    break;
+                }else if(books.get(i) == null){
+                    books.add(book);
+                    repository.save(book);
+                    break;
+                }
+            }
             return true;
-        }else{
+        }catch (Exception e){
+            System.out.println("Error: "+e.toString());
             return false;
         }
+
     }
 
-    public void books(List<Book> books) {
-        appHelperBookInput.printBooks(books);
-    }
-
-    public Repository<Book> getRepository() {
-        return repository;
+    @Override
+    public boolean printList() {
+        return appHelperBook.printList(books);
     }
 }

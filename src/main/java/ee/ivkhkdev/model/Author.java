@@ -2,36 +2,28 @@ package ee.ivkhkdev.model;
 
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.UUID;
 
 public class Author implements Serializable {
-    private static long count;
-    private Long id;
+    private UUID id;
     private String firstname;
     private String lastname;
 
     public Author() {
-        id = count++;
+        this.id = UUID.randomUUID();
     }
 
     public Author(String firstname, String lastname) {
-        id = count++;
+        this.id = UUID.randomUUID();
         this.firstname = firstname;
         this.lastname = lastname;
     }
 
-    public static long getCount() {
-        return count;
-    }
-
-    public static void setCount(long count) {
-        Author.count = count;
-    }
-
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -57,12 +49,13 @@ public class Author implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
 
         Author author = (Author) o;
-        return Objects.equals(firstname, author.firstname) && Objects.equals(lastname, author.lastname);
+        return Objects.equals(id, author.id) && Objects.equals(firstname, author.firstname) && Objects.equals(lastname, author.lastname);
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hashCode(firstname);
+        int result = Objects.hashCode(id);
+        result = 31 * result + Objects.hashCode(firstname);
         result = 31 * result + Objects.hashCode(lastname);
         return result;
     }

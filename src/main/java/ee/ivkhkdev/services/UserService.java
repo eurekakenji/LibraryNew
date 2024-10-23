@@ -1,40 +1,41 @@
 package ee.ivkhkdev.services;
 
-import ee.ivkhkdev.helpers.AppHelperUserInput;
+import ee.ivkhkdev.helpers.AppHelper;
 import ee.ivkhkdev.model.User;
-import ee.ivkhkdev.repository.Repository;
-import ee.ivkhkdev.tools.Input;
+import ee.ivkhkdev.repositories.Repository;
+
 
 import java.util.List;
 
-public class UserService {
-    private final Input input;
-    private final AppHelperUserInput appHelperUserInput;
-    private final Repository<User> repository;
+public class UserService implements Service{
     private final List<User> users;
+    private final Repository<User> repository;
+    private AppHelper appHelperUser;
 
-    public UserService(List<User> users, Input input, AppHelperUserInput appHelperUserInput, Repository<User> repository) {
+    public UserService(List<User> users, AppHelper appHelperUser, Repository<User> repository) {
         this.users = users;
-        this.input = input;
-        this.appHelperUserInput = appHelperUserInput;
+        this.appHelperUser = appHelperUser;
         this.repository = repository;
     }
-    public boolean addUser(){
-        User user = appHelperUserInput.createUser(input);
-        if(user != null){
-            users.add(user);
-            repository.save(users);
-            return true;
-        }else{
-            return false;
+
+    public boolean add() {
+        User user = (User) appHelperUser.create();
+        if(user == null ) return false;
+        for (int i = 0; i <= users.size(); i++){
+            if(i == 0 ){
+                users.add(user);
+                repository.save(user);
+                break;
+            }else if(users.get(i) == null) {
+                users.add(user);
+                repository.save(user);
+                break;
+            }
         }
+        return true;
     }
 
-    public void users(List<User> users) {
-        appHelperUserInput.printUsers(users);
-    }
-
-    public Repository<User> getRepository() {
-        return repository;
+    public boolean printList() {
+        return appHelperUser.printList(users);
     }
 }

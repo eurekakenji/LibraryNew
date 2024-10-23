@@ -1,8 +1,7 @@
 package ee.ivkhkdev.storages;
 
-import ee.ivkhkdev.model.Book;
-import ee.ivkhkdev.model.User;
-import ee.ivkhkdev.repository.Repository;
+
+import ee.ivkhkdev.repositories.Repository;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -10,61 +9,48 @@ import java.util.List;
 
 public class Storage<T> implements Repository<T> {
 
-    //private List<T> entities;
-    private String fileName = "users";
+    private String fileName;
 
     public Storage(String fileName) {
         this.fileName = fileName;
-        //entities = this.load();
     }
-
     @Override
-    public void save(List<T> entities) {
-        FileOutputStream fileOutputStream = null;
-        ObjectOutputStream objectOutputStream = null;
+    public void save(T entity){
+        List<T> entities = this.load();
+        if(entities == null) entities = new ArrayList<>();
+        entities.add(entity);
+        FileOutputStream fileOutputStream;
+        ObjectOutputStream objectOutputStream;
         try {
             fileOutputStream = new FileOutputStream(fileName);
             objectOutputStream = new ObjectOutputStream(fileOutputStream);
             objectOutputStream.writeObject(entities);
             objectOutputStream.flush();
+
         } catch (FileNotFoundException e) {
-            System.out.println("No such file exists: "+e.toString());
+            System.out.println("Не найден файл");
         } catch (IOException e) {
-            System.out.println("Error input/output: "+e.toString());
+            System.out.println("Ошибка ввода");
         }
     }
 
+
+
     @Override
-    public List<T> load() {
-        FileInputStream fileInputStream = null;
-        ObjectInputStream objectInputStream = null;
+    public List<T> load(){
+        FileInputStream fileInputStream;
+        ObjectInputStream objectInputStream;
         try {
             fileInputStream = new FileInputStream(fileName);
             objectInputStream = new ObjectInputStream(fileInputStream);
             return (List<T>) objectInputStream.readObject();
         } catch (FileNotFoundException e) {
-            System.out.println("No such file exists: "+e.toString());
+            System.out.println("Нет такого файла");
         } catch (IOException e) {
-            System.out.println("Error input/output: "+e.toString());
+            System.out.println("Ошибка вывода");
         } catch (ClassNotFoundException e) {
-            System.out.println("Class not found: "+e.toString());
+            System.out.println("Не найден класс ");
         }
-        return new ArrayList<T>();
-    }
-
-//    public List<T> getEntities() {
-//        return entities;
-//    }
-//
-//    public void setUsers(List<T> entities) {
-//        this.entities = entities;
-//    }
-
-    public String getFileName() {
-        return fileName;
-    }
-
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
+        return new ArrayList<>();
     }
 }

@@ -5,11 +5,14 @@ import ee.ivkhkdev.interfaces.Input;
 import java.util.Scanner;
 
 public class ConsoleInput implements Input {
+    private Scanner scanner;
 
-    private Scanner scanner = new Scanner(System.in);
+    public ConsoleInput(Scanner scanner) {
+        this.scanner = scanner;
+    }
 
     @Override
-    public String nextLine() {
+    public String nextLine(){
         return scanner.nextLine();
-    }
+    };
 }
