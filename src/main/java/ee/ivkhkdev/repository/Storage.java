@@ -1,7 +1,7 @@
-package ee.ivkhkdev.storages;
+package ee.ivkhkdev.repository;
 
 
-import ee.ivkhkdev.repositories.Repository;
+import ee.ivkhkdev.repository.Repository;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -28,9 +28,9 @@ public class Storage<T> implements Repository<T> {
             objectOutputStream.flush();
 
         } catch (FileNotFoundException e) {
-            System.out.println("Не найден файл");
+            System.out.println("File not found");
         } catch (IOException e) {
-            System.out.println("Ошибка ввода");
+            System.out.println("Error writing to file");
         }
     }
 
@@ -45,11 +45,11 @@ public class Storage<T> implements Repository<T> {
             objectInputStream = new ObjectInputStream(fileInputStream);
             return (List<T>) objectInputStream.readObject();
         } catch (FileNotFoundException e) {
-            System.out.println("Нет такого файла");
+            System.out.println("File doesn't exist");
         } catch (IOException e) {
-            System.out.println("Ошибка вывода");
+            System.out.println("Error writing to file");
         } catch (ClassNotFoundException e) {
-            System.out.println("Не найден класс ");
+            System.out.println("Class not found");
         }
         return new ArrayList<>();
     }

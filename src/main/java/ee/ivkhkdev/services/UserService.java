@@ -2,7 +2,7 @@ package ee.ivkhkdev.services;
 
 import ee.ivkhkdev.helpers.AppHelper;
 import ee.ivkhkdev.model.User;
-import ee.ivkhkdev.repositories.Repository;
+import ee.ivkhkdev.repository.Repository;
 
 
 import java.util.List;
@@ -10,7 +10,7 @@ import java.util.List;
 public class UserService implements Service{
     private final List<User> users;
     private final Repository<User> repository;
-    private AppHelper appHelperUser;
+    private AppHelper <User> appHelperUser;
 
     public UserService(List<User> users, AppHelper appHelperUser, Repository<User> repository) {
         this.users = users;
@@ -19,7 +19,7 @@ public class UserService implements Service{
     }
 
     public boolean add() {
-        User user = (User) appHelperUser.create();
+        User user = appHelperUser.create();
         if(user == null ) return false;
         for (int i = 0; i <= users.size(); i++){
             if(i == 0 ){
@@ -33,6 +33,16 @@ public class UserService implements Service{
             }
         }
         return true;
+    }
+
+    @Override
+    public boolean print() {
+        return false;
+    }
+
+    @Override
+    public List list() {
+        return users;
     }
 
     public boolean printList() {

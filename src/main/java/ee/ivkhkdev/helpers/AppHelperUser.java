@@ -1,6 +1,6 @@
 package ee.ivkhkdev.helpers;
 
-import ee.ivkhkdev.interfaces.Input;
+import ee.ivkhkdev.input.Input;
 import ee.ivkhkdev.model.User;
 
 import java.util.List;
@@ -18,11 +18,11 @@ public class AppHelperUser implements AppHelper<User> {
     public User create() {
         try {
             User user = new User();
-            System.out.print("Имя пользователя: ");
+            System.out.print("User name: ");
             user.setFirstName(input.nextLine());
-            System.out.print("Фамилия пользователя: ");
+            System.out.print("User surname: ");
             user.setLastName(input.nextLine());
-            System.out.print("Телефон: ");
+            System.out.print("phone: ");
             user.setPhone(input.nextLine());
             return user;
         }catch (Exception e){

@@ -1,16 +1,17 @@
 package ee.ivkhkdev;
 
 import ee.ivkhkdev.helpers.*;
-import ee.ivkhkdev.interfaces.Input;
-import ee.ivkhkdev.interfaces.impl.ConsoleInput;
+import ee.ivkhkdev.input.Input;
+import ee.ivkhkdev.input.ConsoleInput;
 import ee.ivkhkdev.model.Author;
 import ee.ivkhkdev.model.Book;
 import ee.ivkhkdev.model.User;
-import ee.ivkhkdev.repositories.Repository;
+import ee.ivkhkdev.repository.Repository;
 import ee.ivkhkdev.services.AuthorService;
+import ee.ivkhkdev.services.Service;
 import ee.ivkhkdev.services.UserService;
 import ee.ivkhkdev.services.BookService;
-import ee.ivkhkdev.storages.Storage;
+import ee.ivkhkdev.repository.Storage;
 import java.util.List;
 import java.util.Scanner;
 
@@ -26,11 +27,11 @@ public class App {
     private Repository<Author> authorRepository;
     private Repository<User> userRepository;
     private Repository<Book> bookRepository;
-    private UserService userService;
-    private BookService bookService;
-    private AuthorService authorService;
+    private Service <User> userService;
+    private Service <Book> bookService;
+    private Service <Author> authorService;
 
-    // Теперь в конструктор передается Input вместо Scanner
+
     public App() {
         userRepository = new Storage<>("users");
         bookRepository = new Storage<>("books");
@@ -77,20 +78,20 @@ public class App {
                     };
                     break;
                 case 2:
-                    if(userService.printList()){
+                    if(userService.print()){
                         System.out.println("----------- end of list -----------");
                     }
                     break;
                 case 3:
                     System.out.println("Adding book");
                     if(bookService.add()){
-                        System.out.println("Book addded");
+                        System.out.println("Book added");
                     }else {
                         System.out.println("Failed to add book");
                     }
                     break;
                 case 4:
-                    if(bookService.printList()){
+                    if(bookService.print()){
                         System.out.println("----------- end of list -----------");
                     }
                     break;

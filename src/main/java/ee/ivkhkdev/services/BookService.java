@@ -2,7 +2,7 @@ package ee.ivkhkdev.services;
 
 import ee.ivkhkdev.helpers.AppHelper;
 import ee.ivkhkdev.model.Book;
-import ee.ivkhkdev.repositories.Repository;
+import ee.ivkhkdev.repository.Repository;
 
 
 import java.util.List;
@@ -11,7 +11,7 @@ public class BookService implements Service{
 
     private final List<Book> books;
     private Repository<Book> repository;
-    private AppHelper appHelperBook;
+    private AppHelper <Book> appHelperBook;
 
     public BookService(List<Book> books, AppHelper appHelperBook, Repository<Book> repository) {
         this.books = books;
@@ -20,7 +20,7 @@ public class BookService implements Service{
     }
     public boolean add(){
         try {
-            Book book = (Book) appHelperBook.create();
+            Book book = appHelperBook.create();
             if(book == null) return false;
             for (int i = 0; i <= books.size(); i++){
                 if(i == 0 ){
@@ -42,7 +42,17 @@ public class BookService implements Service{
     }
 
     @Override
-    public boolean printList() {
+    public boolean print() {
         return appHelperBook.printList(books);
+    }
+
+    @Override
+    public List list() {
+        return books;
+    }
+
+    @Override
+    public boolean printList() {
+        return false;
     }
 }
