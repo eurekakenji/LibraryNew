@@ -1,13 +1,14 @@
 package ee.ivkhkdev.services;
 
-import ee.ivkhkdev.helpers.AppHelper;
+import ee.ivkhkdev.interfaces.AppHelper;
+import ee.ivkhkdev.interfaces.Service;
 import ee.ivkhkdev.model.Book;
-import ee.ivkhkdev.repository.Repository;
+import ee.ivkhkdev.interfaces.Repository;
 
 
 import java.util.List;
 
-public class BookService implements Service{
+public class BookService implements Service {
 
     private final List<Book> books;
     private Repository<Book> repository;

@@ -1,19 +1,18 @@
 package ee.ivkhkdev.services;
 
-import ee.ivkhkdev.helpers.AppHelper;
+import ee.ivkhkdev.interfaces.AppHelper;
+import ee.ivkhkdev.interfaces.Service;
 import ee.ivkhkdev.model.Author;
-import ee.ivkhkdev.repository.Repository;
+import ee.ivkhkdev.interfaces.Repository;
 
 import java.util.List;
 
-public class AuthorService implements Service{
+public class AuthorService implements Service {
 
-    private final List <Author> authors;
     private Repository <Author> repository;
     private AppHelper <Author> appHelperAuthor;
 
-    public AuthorService(List<Author> authors, AppHelper appHelperAuthor, Repository<Author> repository) {
-        this.authors = authors;
+    public AuthorService(AppHelper appHelperAuthor, Repository<Author> repository) {
         this.appHelperAuthor = appHelperAuthor;
         this.repository = repository;
     }
@@ -21,21 +20,12 @@ public class AuthorService implements Service{
     public boolean add(){
         Author author = appHelperAuthor.create();
         if(author == null) return false;
+        List<Author> authors = repository.load();
         try {
-            for (int i = 0; i <= authors.size(); i++){
-                if(i == 0 ){
-                    authors.add(author);
-                    repository.save(author);
-                    break;
-                }else if(authors.get(i) == null){
-                    authors.add(author);
-                    repository.save(author);
-                    break;
-                }
-            }
+            repository.save(author);
             return true;
-        }catch (Exception e){
-            System.out.println("Error: "+e.toString());
+        }catch(Exception e){
+            repository.save(author);
             return false;
         }
     }
@@ -48,10 +38,11 @@ public class AuthorService implements Service{
 
     @Override
     public boolean printList() {
+        List<Author> authors = repository.load();
         return appHelperAuthor.printList(authors);
     }
 
     public List<Author> list() {
-        return authors;
+        return repository.load();
     }
 }

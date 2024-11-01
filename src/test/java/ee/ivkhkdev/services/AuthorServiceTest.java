@@ -1,9 +1,10 @@
 package ee.ivkhkdev.services;
 
-import ee.ivkhkdev.helpers.AppHelper;
+import ee.ivkhkdev.interfaces.AppHelper;
 import ee.ivkhkdev.helpers.AppHelperAuthor;
+import ee.ivkhkdev.interfaces.Service;
 import ee.ivkhkdev.model.Author;
-import ee.ivkhkdev.repository.Repository;
+import ee.ivkhkdev.interfaces.Repository;
 import ee.ivkhkdev.repository.Storage;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -87,6 +88,7 @@ class AuthorServiceTest {
 
     @Test
     void testList() {
-        //List<Author> result =;
+        List<Author> result = authorService.list();
+        assertSame(authors, result);
     }
 }
