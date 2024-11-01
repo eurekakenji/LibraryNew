@@ -16,7 +16,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
-class AppHelperUserTest {
+class UserAppHelperTest {
     Input inputMock;
     AppHelper<User> appHelperUser;
     PrintStream defaultOut = System.out;
@@ -25,7 +25,7 @@ class AppHelperUserTest {
     @BeforeEach
     void setUp() {
         inputMock = Mockito.mock(Input.class);
-        appHelperUser = new AppHelperUser(inputMock);
+        appHelperUser = new UserAppHelper(inputMock);
         outMock = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outMock));
     }

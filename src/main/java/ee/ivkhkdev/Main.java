@@ -3,7 +3,7 @@ package ee.ivkhkdev;
 import ee.ivkhkdev.interfaces.AppHelper;
 import ee.ivkhkdev.helpers.AppHelperAuthor;
 import ee.ivkhkdev.helpers.AppHelperBook;
-import ee.ivkhkdev.helpers.AppHelperUser;
+import ee.ivkhkdev.helpers.UserAppHelper;
 import ee.ivkhkdev.input.ConsoleInput;
 import ee.ivkhkdev.interfaces.Input;
 import ee.ivkhkdev.model.Author;
@@ -32,7 +32,7 @@ public class Main {
         List<Book> books = bookRepository.load();
 
         AppHelper<Author> appHelperAuthor = new AppHelperAuthor(input);
-        AppHelper<User> appHelperUser = new AppHelperUser(input);
+        AppHelper<User> appHelperUser = new UserAppHelper(input);
 
         Service<Author> authorService = new AuthorService(authors,appHelperAuthor,authorRepository);
 
