@@ -1,4 +1,4 @@
-package ee.ivkhkdev.repository;
+package ee.ivkhkdev.storage;
 
 
 import ee.ivkhkdev.interfaces.Repository;

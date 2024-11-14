@@ -1,5 +1,7 @@
 package ee.ivkhkdev;
 
+import ee.ivkhkdev.factory.Factory;
+import ee.ivkhkdev.factory.JavaConfiguration;
 import ee.ivkhkdev.interfaces.AppHelper;
 import ee.ivkhkdev.helpers.AppHelperAuthor;
 import ee.ivkhkdev.helpers.AppHelperBook;
@@ -10,7 +12,7 @@ import ee.ivkhkdev.model.Author;
 import ee.ivkhkdev.model.Book;
 import ee.ivkhkdev.model.User;
 import ee.ivkhkdev.interfaces.Repository;
-import ee.ivkhkdev.repository.Storage;
+import ee.ivkhkdev.storage.Storage;
 import ee.ivkhkdev.services.AuthorService;
 import ee.ivkhkdev.services.BookService;
 import ee.ivkhkdev.interfaces.Service;
@@ -21,6 +23,8 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
+        Factory.getInstance(new JavaConfiguration());
+
         Input input = new ConsoleInput(new Scanner(System.in));
 
         Repository<Author> authorRepository = new Storage<>("authors");

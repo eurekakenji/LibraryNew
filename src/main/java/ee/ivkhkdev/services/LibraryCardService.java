@@ -31,6 +31,11 @@ public class LibraryCardService implements Service<LibraryCard> {
         return List.of();
     }
 
+    @Override
+    public boolean printList() {
+        return false;
+    }
+
     public List<LibraryCard> returnBook(){
         return repository.load();
     }
