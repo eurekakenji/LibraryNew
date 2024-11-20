@@ -3,13 +3,13 @@ package ee.ivkhkdev;
 import ee.ivkhkdev.factory.Factory;
 import ee.ivkhkdev.factory.JavaConfiguration;
 import ee.ivkhkdev.interfaces.AppHelper;
-import ee.ivkhkdev.helpers.AppHelperAuthor;
-import ee.ivkhkdev.helpers.AppHelperBook;
+import ee.ivkhkdev.helpers.AuthorAppHelper;
+import ee.ivkhkdev.helpers.BookAppHelper;
 import ee.ivkhkdev.helpers.UserAppHelper;
-import ee.ivkhkdev.input.ConsoleInput;
 import ee.ivkhkdev.interfaces.Input;
 import ee.ivkhkdev.model.Author;
 import ee.ivkhkdev.model.Book;
+import ee.ivkhkdev.model.LibraryCard;
 import ee.ivkhkdev.model.User;
 import ee.ivkhkdev.interfaces.Repository;
 import ee.ivkhkdev.storage.Storage;
@@ -18,34 +18,23 @@ import ee.ivkhkdev.services.BookService;
 import ee.ivkhkdev.interfaces.Service;
 import ee.ivkhkdev.services.UserService;
 
-import java.util.List;
-import java.util.Scanner;
-
 public class Main {
+
     public static void main(String[] args) {
-        Factory.getInstance(new JavaConfiguration());
+        Factory factory = Factory.getInstance(new JavaConfiguration());
+        Repository<Author> authorRepository = (Storage) factory.getObject("authorRepository");
+        Repository<User> userRepository = (Storage) factory.getObject("authorRepository");
+        Repository<Book> bookRepository = (Storage) factory.getObject("authorRepository");
+        Input input = (Input) factory.getObject("input");
+        AppHelper<Author> authorAppHelper = (AuthorAppHelper) factory.getObject("authorAppHelper");
+        AppHelper<User> userAppHelper = (UserAppHelper) factory.getObject("userAppHelper");
+        Service<Author> authorService = (AuthorService) factory.getObject("authorService");
+        AppHelper<Book> bookAppHelper =(BookAppHelper) factory.getObject("bookAppHelper");
+        Service<User> userService =(UserService) factory.getObject("userService");
+        Service<Book> bookService = (BookService) factory.getObject("bookService");
+        Repository<LibraryCard> libraryCartRepository = (Storage) factory.getObject("libraryCartRepository");
+        Service<LibraryCard> libraryCardService = (BookService) factory.getObject("bookService");
 
-        Input input = new ConsoleInput(new Scanner(System.in));
-
-        Repository<Author> authorRepository = new Storage<>("authors");
-        Repository<User> userRepository = new Storage<>("users");
-        Repository<Book> bookRepository = new Storage<>("books");
-
-        List<Author> authors = authorRepository.load();
-        List<User> users = userRepository.load();
-        List<Book> books = bookRepository.load();
-
-        AppHelper<Author> appHelperAuthor = new AppHelperAuthor(input);
-        AppHelper<User> appHelperUser = new UserAppHelper(input);
-
-        Service<Author> authorService = new AuthorService(authors,appHelperAuthor,authorRepository);
-
-        AppHelper<Book> appHelperBook = new AppHelperBook(input, authorService);
-
-        Service<User> userService = new UserService(users,appHelperUser,userRepository);
-        Service<Book> bookService = new BookService(books,appHelperBook,bookRepository);
-
-        App app = new App(input, userService, bookService, authorService);
-        app.run();
+        ((App)factory.getObject("app")).run();
     }
 }

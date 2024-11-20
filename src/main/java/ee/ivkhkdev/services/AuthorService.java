@@ -9,39 +9,41 @@ import java.util.List;
 
 public class AuthorService implements Service {
 
-    private Repository <Author> repository;
-    private AppHelper <Author> appHelperAuthor;
+    private Repository<Author> repository;
+    private AppHelper<Author> appHelperAuthor;
 
-    public AuthorService(AppHelper appHelperAuthor, Repository<Author> repository) {
+    public AuthorService(AppHelper<Author> appHelperAuthor, Repository<Author> repository) {
         this.appHelperAuthor = appHelperAuthor;
         this.repository = repository;
+    }
+
+    public AppHelper<Author> getAppHelperAuthor() {
+        return appHelperAuthor;
     }
 
     public boolean add(){
         Author author = appHelperAuthor.create();
         if(author == null) return false;
-        List<Author> authors = repository.load();
         try {
             repository.save(author);
             return true;
-        }catch(Exception e){
-            repository.save(author);
+        }catch (Exception e){
+            System.out.println("Error: "+e.toString());
             return false;
         }
     }
 
     @Override
-    public boolean print() {
+    public boolean edit() {
         return false;
     }
 
-
     @Override
-    public boolean printList() {
-        List<Author> authors = repository.load();
-        return appHelperAuthor.printList(authors);
+    public boolean print() {
+        return appHelperAuthor.printList(repository.load());
     }
 
+    @Override
     public List<Author> list() {
         return repository.load();
     }

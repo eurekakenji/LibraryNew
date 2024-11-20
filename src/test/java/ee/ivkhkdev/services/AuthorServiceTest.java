@@ -1,7 +1,7 @@
 package ee.ivkhkdev.services;
 
 import ee.ivkhkdev.interfaces.AppHelper;
-import ee.ivkhkdev.helpers.AppHelperAuthor;
+import ee.ivkhkdev.helpers.AuthorAppHelper;
 import ee.ivkhkdev.interfaces.Service;
 import ee.ivkhkdev.model.Author;
 import ee.ivkhkdev.interfaces.Repository;
@@ -30,7 +30,7 @@ class AuthorServiceTest {
         Author author = new Author("Lev", "Tolstoi");
         authors = new ArrayList<>();
         authors.add(author);
-        appHelperAuthorMock = Mockito.mock(AppHelperAuthor.class);
+        appHelperAuthorMock = Mockito.mock(AuthorAppHelper.class);
         when(appHelperAuthorMock.create()).thenReturn(new Author("Ivan", "Turgenev"));
         repositoryMock = Mockito.mock(Storage.class);
         authorService = new AuthorService(authors, appHelperAuthorMock, repositoryMock);

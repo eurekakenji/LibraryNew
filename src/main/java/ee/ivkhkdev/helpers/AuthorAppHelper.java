@@ -6,23 +6,21 @@ import ee.ivkhkdev.model.Author;
 
 import java.util.List;
 
-public class AppHelperAuthor implements AppHelper<Author> {
+public class AuthorAppHelper implements AppHelper<Author> {
 
     private final Input input;
 
-
-    public AppHelperAuthor(Input input) {
+    public AuthorAppHelper(Input input) {
         this.input = input;
-
     }
 
     @Override
     public Author create() {
         Author author = new Author();
         try {
-            System.out.print("Name: ");
+            System.out.print("Имя: ");
             author.setFirstname(input.nextLine());
-            System.out.print("Surname: ");
+            System.out.print("Фамилия: ");
             author.setLastname(input.nextLine());
             return author;
         }catch (Exception e){
@@ -30,10 +28,8 @@ public class AppHelperAuthor implements AppHelper<Author> {
         }
     }
 
-
-
     @Override
-    public static boolean printList(List<Author> authors) {
+    public boolean printList(List<Author> authors) {
         try {
             if(authors.size() < 1) return false;
             for(int i = 0; i < authors.size(); i++){
@@ -44,5 +40,10 @@ public class AppHelperAuthor implements AppHelper<Author> {
             System.out.println("Error: "+e.toString());
             return false;
         }
+    }
+
+    @Override
+    public List<Author> edit(List<Author> authors) {
+        return List.of();
     }
 }

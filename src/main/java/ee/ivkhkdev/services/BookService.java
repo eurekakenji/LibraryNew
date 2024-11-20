@@ -10,12 +10,10 @@ import java.util.List;
 
 public class BookService implements Service {
 
-    private final List<Book> books;
     private Repository<Book> repository;
-    private AppHelper <Book> appHelperBook;
+    private AppHelper<Book> appHelperBook;
 
-    public BookService(List<Book> books, AppHelper appHelperBook, Repository<Book> repository) {
-        this.books = books;
+    public BookService(AppHelper<Book> appHelperBook, Repository<Book> repository) {
         this.appHelperBook = appHelperBook;
         this.repository = repository;
     }
@@ -23,37 +21,31 @@ public class BookService implements Service {
         try {
             Book book = appHelperBook.create();
             if(book == null) return false;
-            for (int i = 0; i <= books.size(); i++){
-                if(i == 0 ){
-                    books.add(book);
-                    repository.save(book);
-                    break;
-                }else if(books.get(i) == null){
-                    books.add(book);
-                    repository.save(book);
-                    break;
-                }
-            }
+            repository.save(book);
             return true;
         }catch (Exception e){
             System.out.println("Error: "+e.toString());
             return false;
         }
+    }
 
+    @Override
+    public boolean edit() {
+        List<Book> modifiedBooks = appHelperBook.edit(repository.load());
+        if(modifiedBooks == null){
+            return false;
+        }
+        repository.saveAll(modifiedBooks);
+        return true;
     }
 
     @Override
     public boolean print() {
-        return appHelperBook.printList(books);
+        return appHelperBook.printList(repository.load());
     }
 
     @Override
     public List list() {
-        return books;
-    }
-
-    @Override
-    public boolean printList() {
-        return false;
+        return repository.load();
     }
 }

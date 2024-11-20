@@ -16,41 +16,43 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
-
-class AppHelperAuthorTest {
+class AuthorAppHelperTest {
     Input inputMock;
     AppHelper<Author> authorAppHelper;
     PrintStream defaultOut = System.out;
     ByteArrayOutputStream outMock;
-
     @BeforeEach
     void setUp() {
         inputMock = Mockito.mock(Input.class);
-        authorAppHelper = new AppHelperAuthor(inputMock);
+        authorAppHelper = new AuthorAppHelper(inputMock);
         outMock = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outMock));
-
     }
 
     @AfterEach
     void tearDown() {
         inputMock = null;
         System.setOut(defaultOut);
-        outMock = null;
-
+        outMock=null;
     }
 
     @Test
-    void create() {
+    void create_ShouldReturnAuthorWithValidInput() {
         when(inputMock.nextLine()).thenReturn("Lev","Tolstoy");
         Author actual = authorAppHelper.create();
         Author expected = new Author("Lev","Tolstoy");
         assertEquals(actual.getFirstname(), expected.getFirstname());
         assertEquals(actual.getLastname(), expected.getLastname());
     }
+    @Test
+    void create_ShouldReturnNullWhenExceptionOccurs() {
+        when(inputMock.nextLine()).thenThrow(new RuntimeException("Input error"));
+        Author author = authorAppHelper.create();
+        assertNull(author);
+    }
 
     @Test
-    void printList() {
+    void printList_ShouldPrintAuthorsWhenListIsNotEmpty() {
         Author author = new Author("Lev","Tolstoy");
         List<Author> authors = new ArrayList<>();
         authors.add(author);
@@ -59,6 +61,17 @@ class AppHelperAuthorTest {
         assertTrue(result);
         String expectedString = "1. Lev Tolstoy";
         assertTrue(outMock.toString().contains(expectedString));
-
+    }
+    @Test
+    void printList_ShouldReturnFalseWhenListIsEmpty() {
+        List<Author> authors = List.of();
+        boolean result = authorAppHelper.printList(authors);
+        assertFalse(result);
+    }
+    @Test
+    void printList_ShouldReturnFalseWhenExceptionOccurs() {
+        List<Author> authors = null;
+        boolean result = authorAppHelper.printList(authors);
+        assertFalse(result);
     }
 }

@@ -9,10 +9,11 @@ import ee.ivkhkdev.interfaces.Repository;
 import java.util.List;
 
 public class UserService implements Service {
-    private final Repository<User> repository;
-    private AppHelper <User> appHelperUser;
 
-    public UserService(AppHelper appHelperUser, Repository<User> repository) {
+    private final Repository<User> repository;
+    private AppHelper<User> appHelperUser;
+
+    public UserService(AppHelper<User> appHelperUser, Repository<User> repository) {
         this.appHelperUser = appHelperUser;
         this.repository = repository;
     }
@@ -20,26 +21,31 @@ public class UserService implements Service {
     public boolean add() {
         User user = appHelperUser.create();
         if(user == null ) return false;
-        users.add(user);
-        try{
+        try {
             repository.save(user);
             return true;
-        }catch(Exception e){
+        }catch (Exception e){
             return false;
         }
+
     }
 
     @Override
+    public boolean edit() {
+        List<User> modifiedUsers = appHelperUser.edit(repository.load());
+        if(modifiedUsers == null || modifiedUsers.size() == 0){
+            return false;
+        }
+        repository.saveAll(modifiedUsers);
+        return true;
+    }
+
     public boolean print() {
-        return false;
+        return appHelperUser.printList(repository.load());
     }
 
     @Override
     public List list() {
-        return users;
-    }
-
-    public boolean printList() {
-        return users;
+        return repository.load();
     }
 }

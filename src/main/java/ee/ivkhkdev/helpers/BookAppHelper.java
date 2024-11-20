@@ -8,12 +8,12 @@ import ee.ivkhkdev.interfaces.Service;
 
 import java.util.List;
 
-public class AppHelperBook implements AppHelper<Book> {
+public class BookAppHelper implements AppHelper<Book> {
 
     private final Input input;
     private final Service<Author> authorService;
 
-    public AppHelperBook(Input input, Service<Author> authorService) {
+    public BookAppHelper(Input input, Service<Author> authorService) {
         this.input = input;
         this.authorService = authorService;
     }

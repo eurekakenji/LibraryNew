@@ -9,10 +9,8 @@ import java.util.List;
 public class UserAppHelper implements AppHelper<User> {
     private final Input input;
 
-
     public UserAppHelper(Input input) {
         this.input = input;
-
     }
 
     @Override
@@ -23,7 +21,7 @@ public class UserAppHelper implements AppHelper<User> {
             user.setFirstName(input.nextLine());
             System.out.print("User surname: ");
             user.setLastName(input.nextLine());
-            System.out.print("phone: ");
+            System.out.print("Phone number: ");
             user.setPhone(input.nextLine());
             return user;
         }catch (Exception e){
@@ -48,5 +46,41 @@ public class UserAppHelper implements AppHelper<User> {
             System.out.println("Error: "+e.toString());
             return false;
         }
+    }
+
+    @Override
+    public List<User> edit(List<User> users) {
+        try {
+            System.out.println("---- Editing User -----");
+            this.printList(users);
+            System.out.print("Choose user: ");
+            int numberUser = Integer.parseInt(input.nextLine());
+            System.out.println("Name: " + users.get(numberUser-1).getFirstName());
+            System.out.print("Edit? (y/n): ");
+            String choice = input.nextLine();
+            if(choice.equals("y")){
+                System.out.print("New name: ");
+                users.get(numberUser-1).setFirstName(input.nextLine());
+            }
+            System.out.println("Surname: " + users.get(numberUser-1).getLastName());
+            System.out.print("Edit? (y/n): ");
+            choice = input.nextLine();
+            if(choice.equals("y")){
+                System.out.print("New surname: ");
+                users.get(numberUser-1).setLastName(input.nextLine());
+            }
+            System.out.println("Phone number: " + users.get(numberUser-1).getLastName());
+            System.out.print("Edit? (y/n): ");
+            choice = input.nextLine();
+            if(choice.equals("y")){
+                System.out.print("New phone number: ");
+                users.get(numberUser-1).setPhone(input.nextLine());
+            }
+            return users;
+        }catch (Exception e){
+            System.out.println("Error: "+e.getMessage());
+            return null;
+        }
+
     }
 }

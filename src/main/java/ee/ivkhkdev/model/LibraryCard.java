@@ -1,26 +1,27 @@
 package ee.ivkhkdev.model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 import java.util.UUID;
 
-public class LibraryCard {
+public class LibraryCard implements Serializable {
     private UUID id;
     private Book book;
     private User user;
-    private LocalDate borrowedBookDate;
-    private LocalDate returnedBookDate;
+    private LocalDate borrowdBookDate;
+    private LocalDate returnBookDate;
 
     public LibraryCard() {
         this.id = UUID.randomUUID();
     }
 
-    public LibraryCard(LocalDate returnedBookDate, LocalDate borrowedBookDate, User user, Book book, UUID id) {
-        this.returnedBookDate = returnedBookDate;
-        this.borrowedBookDate = borrowedBookDate;
-        this.user = user;
-        this.book = book;
+    public LibraryCard(Book book, User user, LocalDate borrowdBookDate, LocalDate returnBookDate) {
         this.id = UUID.randomUUID();
+        this.book = book;
+        this.user = user;
+        this.borrowdBookDate = borrowdBookDate;
+        this.returnBookDate = returnBookDate;
     }
 
     public UUID getId() {
@@ -47,20 +48,20 @@ public class LibraryCard {
         this.user = user;
     }
 
-    public LocalDate getBorrowedBookDate() {
-        return borrowedBookDate;
+    public LocalDate getBorrowdBookDate() {
+        return borrowdBookDate;
     }
 
-    public void setBorrowedBookDate(LocalDate borrowedBookDate) {
-        this.borrowedBookDate = borrowedBookDate;
+    public void setBorrowdBookDate(LocalDate borrowdBookDate) {
+        this.borrowdBookDate = borrowdBookDate;
     }
 
-    public LocalDate getReturnedBookDate() {
-        return returnedBookDate;
+    public LocalDate getReturnBookDate() {
+        return returnBookDate;
     }
 
-    public void setReturnedBookDate(LocalDate returnedBookDate) {
-        this.returnedBookDate = returnedBookDate;
+    public void setReturnBookDate(LocalDate returnBookDate) {
+        this.returnBookDate = returnBookDate;
     }
 
     @Override
@@ -69,7 +70,7 @@ public class LibraryCard {
         if (o == null || getClass() != o.getClass()) return false;
 
         LibraryCard that = (LibraryCard) o;
-        return Objects.equals(id, that.id) && Objects.equals(book, that.book) && Objects.equals(user, that.user) && Objects.equals(borrowedBookDate, that.borrowedBookDate) && Objects.equals(returnedBookDate, that.returnedBookDate);
+        return Objects.equals(id, that.id) && Objects.equals(book, that.book) && Objects.equals(user, that.user) && Objects.equals(borrowdBookDate, that.borrowdBookDate) && Objects.equals(returnBookDate, that.returnBookDate);
     }
 
     @Override
@@ -77,8 +78,20 @@ public class LibraryCard {
         int result = Objects.hashCode(id);
         result = 31 * result + Objects.hashCode(book);
         result = 31 * result + Objects.hashCode(user);
-        result = 31 * result + Objects.hashCode(borrowedBookDate);
-        result = 31 * result + Objects.hashCode(returnedBookDate);
+        result = 31 * result + Objects.hashCode(borrowdBookDate);
+        result = 31 * result + Objects.hashCode(returnBookDate);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("LibraryCart{");
+        sb.append("id=").append(id);
+        sb.append(", book=").append(book);
+        sb.append(", user=").append(user);
+        sb.append(", borrowdBookDate=").append(borrowdBookDate);
+        sb.append(", returnBookDate=").append(returnBookDate);
+        sb.append('}');
+        return sb.toString();
     }
 }
